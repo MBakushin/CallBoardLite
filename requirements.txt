@@ -1,0 +1,15 @@
+python-dotenv
+
+Django
+Pillow
+
+django-allauth
+django-debug-toolbar
+django-environ
+django-extensions
+djangorestframework
+django-filter
+django-ckeditor-5
+
+celery
+redis
