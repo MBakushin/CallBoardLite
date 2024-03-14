@@ -1,14 +1,12 @@
-from django.forms import ModelForm
-from django.contrib.auth.models import User
+from django.forms import ModelForm, CharField, Textarea
 
-from .models import Announce
+from .models import Announce, Respond
 
 
 class AnnounceForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
-        #self.fields['user'] = User.objects.get(username=self.request.user__username)
+        # self.user = user
         for field in self.fields:
             self.fields[field].widget.attrs.update(
                 {'class': 'form-control', 'autocomplete': 'off'})
@@ -19,4 +17,14 @@ class AnnounceForm(ModelForm):
 
     class Meta:
         model = Announce
-        fields = ('header', 'text', 'cat', 'user')
+        fields = ('header', 'text', 'slug', 'category', )
+
+
+class RespondForm(ModelForm):
+    header = CharField(label='', widget=Textarea(attrs={'cols': 30, 'rows': 5,
+                                                        'placeholder': 'Respond',
+                                                        'class': 'form-control'}))
+
+    class Meta:
+        model = Respond
+        fields = ('header', )

@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-w#c^nwolruo$3k#4i^v9a44eo6(ljr#^l=lusud=-ui+$%$ku^'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,23 +47,30 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
 
+    # celery
+    'celery',
+
     # add django-allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
 
+    # add django-mptt
+    'mptt',
+
     # add sites, flatpages, fpages
     'django.contrib.sites',
     'django.contrib.flatpages',
     'fpages',
 
-    #add ckeditor WYSIWYG-field
+    # add ckeditor WYSIWYG-field
     'django_ckeditor_5',
 
     # add apps callboard, sign
-    'callboard',
-    'sign',
+    'callboard.apps.CallboardConfig',
+    'callboard.services',
+    'sign.apps.SignConfig',
 ]
 
 SITE_ID = 1
@@ -83,6 +90,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+SITE_URL = 'http://127:0:0:1:8000'
 
 TEMPLATES = [
     {
@@ -120,7 +129,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -152,7 +160,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -166,8 +173,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
 
 # Path to ckeditor
 customColorPalette = [
@@ -197,8 +202,7 @@ customColorPalette = [
         },
     ]
 
-CKEDITOR_5_CUSTOM_CSS = 'static/css/styles.css' # optional
-#CKEDITOR_5_FILE_STORAGE = "media/uploads/" # optional
+CKEDITOR_5_CUSTOM_CSS = 'css/styles.css'
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': ['heading', '|', 'bold', 'italic', 'link',
@@ -285,3 +289,13 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
+
+# celery settings
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CKEDITOR_5_RESTRICT_BY_USER = True
+CKEDITOR_5_FILE_STORAGE = "callboard.services.utils.CkeditorCustomStorage"

@@ -1,0 +1,8 @@
+{% if request.user.is_authenticated %}
+<h5>Add respond:</h5>
+<form method="POST" action="{% url 'respond_create' announce_detail.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add respond">
+</form>
+{% endif %}

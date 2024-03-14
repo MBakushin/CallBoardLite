@@ -1,0 +1,42 @@
+{% extends 'flatpages/index.html' %}
+
+{% block title %}{{ profile.username }}{% endblock title %}
+
+{% block content %}
+<div class="card border-0">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <figure>
+                        <img src="{{ profile.image.url }}" class="img-fluid rounded-0" alt="{{ profile }}">
+                    </figure>
+                </div>
+                <div class="col-md-9">
+                     <h5 class="card-title">
+                        {{ profile }}
+                    </h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>Login: {{ profile.user.username }}</li>
+                            {% if profile.user.get_full_name %} <li>Name: {{ profile.user.get_full_name }}</li> {% endif %}
+                            <li>Last login: {{ profile.user.last_login }}</li>
+                        </ul>
+                    <a href="{% url 'profile_update' profile.slug %}" class="btn btn-sm btn-primary">Update profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for announce in profile.user.author_announces.all %}
+    <h5>{{ announce.header }}</h5>
+    <p>{{ announce.text|safe }}</p>
+    <a href="{% url 'announce_detail' announce.slug %}">Go to announ</a>
+    {% if not forloop.last %}
+    <hr>
+    {% endif %}
+  {% empty %}
+    <h2 style="text-align: center; margin-top: 20px">No announce here</h2>
+  {% endfor %}
+
+{% endblock content %}

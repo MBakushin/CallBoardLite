@@ -1,0 +1,23 @@
+{% extends 'flatpages/index.html' %}
+
+{% block title %}{{ announce_detail.header }}{% endblock title %}
+
+{% block content %}
+  <h3>{{ announce_detail.header }}</h3>
+  <p>{{ announce_detail.text|safe }}</p>
+  <div class="container">
+    <h4>Responds:</h4>
+    <br>
+    {% for respond in announce_detail.responds.all %}
+    <h6>{{ respond.author }}, {{ respond.time_to_update }}:</h6>
+    <p>{{ respond.header }}</p>
+    <br>
+    {% empty %}
+    <h6>No responds.</h6>
+    <br>
+    {% endfor %}
+
+    {% include 'respond_create.html' %}
+
+  </div>
+{% endblock content %}

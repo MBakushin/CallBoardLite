@@ -3,7 +3,7 @@ from .models import *
 
 
 class AnnounceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'header', 'text', 'time_to_create')
+    list_display = ('id', 'header', 'text', 'slug', 'time_to_create')
     list_filter = ('id', 'header', 'time_to_create')
     search_fields = ('id', 'header', 'time_to_create')
 

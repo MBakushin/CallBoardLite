@@ -6,8 +6,8 @@
 <h3>Announce information</h3>
 <form method="POST">
     {% csrf_token %}
-    {{ form.media }} <!-- Теперь нам нужна только готовая форма и кнопка -->
-    {{ form }}
+    {{ form.media }}
+    {{ form.as_p }}
     <input type="submit" value="Add announce">
 </form>
 {% endblock content %}

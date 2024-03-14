@@ -1,0 +1,16 @@
+{% extends 'flatpages/index.html' %}
+
+{% block title %}Delete Announce{% endblock title %}
+
+{% block content %}
+<h2>Do you really want to delete this announce?</h2>
+
+<h5>{{ announce.header }}</h5>
+<p>{{ announce.text|safe }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="confirm">
+</form>
+
+{% endblock content %}

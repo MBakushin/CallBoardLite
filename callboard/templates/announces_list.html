@@ -1,0 +1,16 @@
+{% extends 'flatpages/index.html' %}
+
+{% block title %}All announcies{% endblock title %}
+
+{% block content %}
+  {% for announce in announces_list %}
+    <h5>{{ announce.header }}</h5>
+    <p>{{ announce.text|safe }}</p>
+    <a href="{% url 'announce_detail' announce.slug %}">Go to announce</a>
+    {% if not forloop.last %}
+    <hr>
+    {% endif %}
+  {% empty %}
+    <h2 style="text-align: center; margin-top: 20px">No announces here</h2>
+  {% endfor %}
+{% endblock content %}
