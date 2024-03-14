@@ -9,11 +9,6 @@ from .models import Announce, Category, Respond
 from .forms import AnnounceForm, RespondForm
 
 
-# Create your views here.
-# def home_page(request):
-#     return render(request, 'flatpages/index.html')
-
-
 class AnnounceListView(ListView):
     model = Announce
     ordering = '-time_to_update'
@@ -48,12 +43,6 @@ class AnnounceUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'create_announce.html'
     form_class = AnnounceForm
 
-    # def get_form_kwargs(self):
-    #     kwargs = super(AnnounceUpdateView, self).get_form_kwargs()
-    #     #kwargs.update({'user': self.request.user})
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
-
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.save()
@@ -68,7 +57,7 @@ class AnnounceDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'delete_announce.html'
     queryset = Announce.objects.all()
     context_object_name = 'announce'
-    success_url = reverse_lazy('announcies_list')
+    success_url = reverse_lazy('home')
 
 
 class CategoryListView(ListView):

@@ -297,5 +297,82 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
+# logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'style': '{',
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(asctime)s %(message)s'
+        },
+        'simple_format': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(pathname)s %(message)s'
+        },
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(pathname)s %(message)s %(exc_info)s'
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'console_debug': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'console_warning': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple_format'
+        },
+        'console_error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console_debug', 'console_warning', 'console_error', ],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins', ],
+            'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['mail_admins', ],
+            'propagate': True,
+        },
+        'django.template': {
+            'handlers': ['mail_admins', ],
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['mail_admins', ],
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['mail_admins', ],
+            'propagate': True,
+        },
+    },
+}
+
 CKEDITOR_5_RESTRICT_BY_USER = True
 CKEDITOR_5_FILE_STORAGE = "callboard.services.utils.CkeditorCustomStorage"
